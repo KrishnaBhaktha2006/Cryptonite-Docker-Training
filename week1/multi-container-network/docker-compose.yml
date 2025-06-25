@@ -1,0 +1,30 @@
+services:
+  # This is our client service
+  client:
+    # Tell Compose to build the image from the Dockerfile
+    # located in the './shell-client' directory.
+    build: ./shell-client
+    container_name: shell-client
+    # Connect this service to our custom network
+    networks:
+      my-net:
+        # Assign a static IP address
+        ipv4_address: 10.10.0.5
+
+  # This is our server service
+  server:
+    # Tell Compose to build the image from the Dockerfile
+    # located in the './shell-server' directory.
+    build: ./shell-server
+    container_name: shell-server
+    networks:
+      my-net:
+        ipv4_address: 10.10.0.6 # IP address right next to the client
+
+# Define our custom network
+networks:
+  my-net:
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 10.10.0.0/16

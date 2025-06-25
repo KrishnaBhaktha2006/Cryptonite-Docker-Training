@@ -1,0 +1,52 @@
+{% extends 'base.html' %}
+
+{% block head %}
+    {# Dynamically set the title based on the environment #}
+    {% if app_env == 'production' %}
+        <title>Task Master - PROD</title>
+    {% else %}
+        <title>Task Master - DEV</title>
+    {% endif %}
+{% endblock %}
+
+{% block body %}
+<div class="content">
+    {# Dynamically set the H1 header based on the environment #}
+    {% if app_env == 'production' %}
+        <h1 style="text-align: center; color: red;">Task Master (PRODUCTION)</h1>
+    {% else %}
+        <h1 style="text-align: center; color: green;">Task Master (Development)</h1>
+    {% endif %}
+
+    {# Check if there are any tasks to display #}
+    {% if tasks|length < 1 %}
+        <h4 style="text-align: center">There are no tasks. Create one below!</h4>
+    {% else %}
+        <table>
+            <tr>
+                <th>Task</th>
+                <th>Added</th>
+                <th>Actions</th>
+            </tr>
+            {% for task in tasks %}
+                <tr>
+                    <td>{{ task['content'] }}</td>
+                    <td>{{ task['date_created'][:10] }}</td>
+                    <td>
+                        <a href="/delete/{{ task['id'] }}">Delete</a>
+                        <br>
+                        <a href="/update/{{ task['id'] }}">Update</a>
+                    </td>
+                </tr>
+            {% endfor %} {# This closes the for loop #}
+        </table>
+    {% endif %} {# This closes the if tasks|length < 1 #}
+
+    <div class="form">
+        <form action="/" method="POST">
+            <input type="text" name="content" id="content">
+            <input type="submit" value="Add Task">
+        </form>
+    </div>
+</div>
+{% endblock %}

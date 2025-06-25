@@ -1,0 +1,22 @@
+# Specifies the version of the Docker Compose file format
+version: '3.8'
+
+# Defines the services (containers) that make up your app
+services:
+  # This is the name of our service, you can call it anything (e.g., 'web')
+  task-app:
+    # Tells Compose to build the image from the Dockerfile in the current directory '.'
+    build: .
+    # Sets a specific name for the container for easy reference
+    container_name: my-task-app
+    # Maps port 5000 on your host machine to port 5000 in the container
+    ports:
+      - "5000:5000"
+    # Mounts the test.db file from your local machine into the container
+    # This is the key to data persistence!
+    user: appuser
+    
+    volumes:
+      - .:/app
+    environment:
+      - APP_ENV=production
